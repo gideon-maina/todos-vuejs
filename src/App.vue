@@ -1,59 +1,16 @@
 <template>
   <div id="app">
     <Header />
-    <AddTodo v-on:add-todo="addTodo" />
-    <Todos v-on:del-todo="deleteTodoItem" v-bind:todos="todos" />
+    <router-view />
   </div>
 </template>
 
 <script>
-import Todos from './components/Todos';
 import Header from './components/layout/Header';
-import AddTodo from './components/AddTodo';
-
-import axios from 'axios';
 
 export default {
-  name: 'App',
-  components: { Todos, Header, AddTodo },
-  data() {
-    return {
-      todos: [],
-    };
-  },
-  methods: {
-    deleteTodoItem(id) {
-      // Send to the server and delete upstream
-      const url = `https://jsonplaceholder.typicode.com/todos/${id}`;
-      axios
-        .delete(url)
-        .then((response) => {
-          this.todos = this.todos.filter((todo) => todo.id !== id);
-          return response;
-        })
-        .catch((err) => console.log(err));
-    },
-    addTodo(newTodo) {
-      const { id, title, completed } = newTodo;
-      console.log(`Creating todo id ${id}`);
-      // Send this to todo to the server
-      const url = 'https://jsonplaceholder.typicode.com/todos';
-      axios
-        .post(url, {
-          title,
-          completed,
-        })
-        .then((response) => this.todos.push(response.data))
-        .catch((err) => console.log(err));
-    },
-  },
-  created() {
-    const url = 'https://jsonplaceholder.typicode.com/todos?_limit=4';
-    axios
-      .get(url)
-      .then((response) => (this.todos = response.data))
-      .catch((err) => console.log(err));
-  },
+  name: 'app',
+  components: { Header },
 };
 </script>
 
